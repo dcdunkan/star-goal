@@ -3,14 +3,14 @@ import { serve } from "https://deno.land/std@0.176.0/http/server.ts";
 serve(async (req: Request) => {
   const event = req.headers.get("x-github-event");
   if (!event) {
-    return new Response("https://github.com/dcdunkan/star-goal");
+    return Response.redirect("https://github.com/dcdunkan/star-goal");
   }
   const params = new URL(req.url).searchParams;
   const token = params.get("token");
   const chat = Number(params.get("chat_id"));
   const goal = Number(params.get("goal"));
   if (!token || isNaN(chat) || isNaN(goal)) {
-    return new Response("invalid params")
+    return new Response("invalid params", { status: 400 });
   }
   const payload = await req.json();
   if (payload.hook.type === "Organization") {
@@ -40,5 +40,7 @@ update the goal in the webhook url.`;
   }
 
   const { ok }= await fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat}&text=${message}`);
-  return new Response(`${ok ? "not" : ""} ok`, { status: ok ? 200 : 500 });
+  return new Response(`${ok ? "" : "not"} ok`, { status: ok ? 200 : 500 });
+}, {
+  onError: (error) => { console.error(error) }
 });
