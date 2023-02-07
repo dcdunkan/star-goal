@@ -13,7 +13,7 @@ serve(async (req: Request) => {
     return new Response("invalid params", { status: 400 });
   }
   const payload = await req.json();
-  if (payload.hook.type === "Organization") {
+  if (event === "ping" && payload.hook.type === "Organization") {
     return new Response("org not supported yet", { status: 400 });
   }
 
@@ -21,6 +21,7 @@ serve(async (req: Request) => {
   const count = payload.repository.stargazers_count;
   const repo = payload.repository.full_name;
   if (event === "ping") {
+    console.log("make")
     const starInfo = goal > count
       ? `${goal - count}`
       : `goal is ${goal < count ? "lower than" : "equal to" } the count. \
@@ -39,7 +40,7 @@ update the goal in the webhook url.`;
     return new Response();
   }
 
-  const { ok }= await fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat}&text=${message}`);
+  const { ok } = await fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat}&text=${message}`);
   return new Response(`${ok ? "" : "not"} ok`, { status: ok ? 200 : 500 });
 }, {
   onError: (error) => { console.error(error) }
