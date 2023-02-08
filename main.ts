@@ -1,5 +1,4 @@
 import { serve } from "https://deno.land/std@0.176.0/http/server.ts";
-import { Bot } from "https://deno.land/x/grammy@v1.14.1/mod.ts";
 
 serve(async (req: Request) => {
   const event = req.headers.get("x-github-event");
@@ -35,17 +34,13 @@ please update the url`;
         : `🎉 yay! ${repo} now has ${count} stars! \
 update the goal in the webhook url.`;
     } else {
-      message = `${repo}: someone just unstarred :(`;
+      message = `${repo}: ${goal - count}\nsomeone just unstarred :(`;
     }
   } else {
     return new Response();
   }
 
   const { ok } = await fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat}&text=${encodeURIComponent(message)}`);
-  
-  // const bot = new Bot(token);
-  // const { message_id: ok } = await bot.api.sendMessage(chat, message);
-  
   return new Response(`${ok ? "" : "not"} ok`, { status: ok ? 200 : 500 });
 }, {
   onError: (error) => { console.error(error) }
