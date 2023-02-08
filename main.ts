@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.176.0/http/server.ts";
+import { Bot } from "https://deno.land/x/grammy@v1.14.1/mod.ts";
 
 serve(async (req: Request) => {
   const event = req.headers.get("x-github-event");
@@ -21,7 +22,6 @@ serve(async (req: Request) => {
   const count = payload.repository.stargazers_count;
   const repo = payload.repository.full_name;
   if (event === "ping") {
-    console.log("make")
     const starInfo = goal > count
       ? `${goal - count}`
       : `goal is ${goal < count ? "lower than" : "equal to" } the count. \
@@ -39,8 +39,14 @@ update the goal in the webhook url.`;
   } else {
     return new Response();
   }
+  
+  console.log(message)
 
-  const { ok } = await fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat}&text=${message}`);
+  console.log(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat}&text=${message}`);
+  
+  const bot = new Bot(token);
+  const { message_id: ok } = await bot.api.sendMessage(chat, text);
+  
   return new Response(`${ok ? "" : "not"} ok`, { status: ok ? 200 : 500 });
 }, {
   onError: (error) => { console.error(error) }
