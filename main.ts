@@ -22,11 +22,10 @@ serve(async (req: Request) => {
   const count = payload.repository.stargazers_count;
   const repo = payload.repository.full_name;
   if (event === "ping") {
-    const starInfo = goal > count
-      ? `${goal - count}`
-      : `goal is ${goal < count ? "lower than" : "equal to" } the count. \
+    message = goal > count
+      ? `${repo}: ${goal - count}`
+      : `${repo}: goal is ${goal < count ? "lower than" : "equal to" } the count. \
 please update the url`;
-    message = `${repo}: ${starInfo}`;
   } else if (event === "star") {
     if (payload.action === "created") {
       message = goal - count < 0
@@ -41,13 +40,11 @@ update the goal in the webhook url.`;
   } else {
     return new Response();
   }
-  
-  console.log(message)
 
-  console.log(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat}&text=${message}`);
+  const { ok } = await fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat}&text=${encodeURIComponent(message)}`);
   
-  const bot = new Bot(token);
-  const { message_id: ok } = await bot.api.sendMessage(chat, message);
+  // const bot = new Bot(token);
+  // const { message_id: ok } = await bot.api.sendMessage(chat, message);
   
   return new Response(`${ok ? "" : "not"} ok`, { status: ok ? 200 : 500 });
 }, {
