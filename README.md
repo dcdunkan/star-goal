@@ -1,6 +1,6 @@
 ## Star Goal
 
-Telegram service to keep track of how many stars you need to hit your goal.
+A small service to keep track of how many stars you need to hit your goal.
 
 Inspired by https://ghb.deno.dev.
 
