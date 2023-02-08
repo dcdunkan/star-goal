@@ -45,7 +45,7 @@ update the goal in the webhook url.`;
   console.log(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat}&text=${message}`);
   
   const bot = new Bot(token);
-  const { message_id: ok } = await bot.api.sendMessage(chat, text);
+  const { message_id: ok } = await bot.api.sendMessage(chat, message);
   
   return new Response(`${ok ? "" : "not"} ok`, { status: ok ? 200 : 500 });
 }, {
