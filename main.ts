@@ -28,14 +28,16 @@ serve(async (req: Request) => {
 please update the url`;
     message = `${repo}: ${starInfo}`;
   } else if (event === "star") {
-    message = goal - count < 0
-      ? `${repo}: already hit the goal ${goal}. please update the url`
-      : goal - count > 0
-      ? `${repo}: ${goal - count}`
-      : `🎉 yay! ${repo} now has ${count} stars! \
+    if (payload.action === "created") {
+      message = goal - count < 0
+        ? `${repo}: already hit the goal ${goal}. please update the url`
+        : goal - count > 0
+        ? `${repo}: ${goal - count}`
+        : `🎉 yay! ${repo} now has ${count} stars! \
 update the goal in the webhook url.`;
-  } else if (event === "unstar") {
-    message = `${repo}: someone just unstarred :(`;
+    } else {
+      message = `${repo}: someone just unstarred :(`;
+    }
   } else {
     return new Response();
   }
