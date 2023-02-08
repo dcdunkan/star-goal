@@ -4,7 +4,7 @@ A small service to keep track of how many stars you need to hit your goal.
 
 Inspired by https://ghb.deno.dev.
 
-Replace the required values and add the following URL to your repository's webhooks.
+Replace the required values and add the following URL to your repository's webhooks. Under "Let me select individual events" make sure you've selected the "stars" scope.
 
 ```
 https://ghs.deno.dev/token?=<bot_token>&chat_id=<chat_id>&goal=<goal>
