@@ -23,18 +23,20 @@ serve(async (req: Request) => {
   if (event === "ping") {
     message = goal > count
       ? `${repo}: ${goal - count}`
-      : `${repo}: goal is ${goal < count ? "lower than" : "equal to" } the count. \
-please update the url`;
+      : `${repo}: The goal set (${goal}) is ${goal < count ? "lower than" : "equal to" } the count. \
+Update the webhook URL and set a higher goal.`;
   } else if (event === "star") {
     if (payload.action === "created") {
       message = goal - count < 0
-        ? `${repo}: already hit the goal ${goal}. please update the url`
+        ? `${repo}: already hit the goal of ${goal} stars. Set a new goal by editing the webhook.`
         : goal - count > 0
         ? `${repo}: ${goal - count}`
-        : `🎉 yay! ${repo} now has ${count} stars! \
-update the goal in the webhook url.`;
+        : `🎉 Congratulations on your achievement! ${repo} now has ${count} stars! \
+You can set a new goal by editing the webhook URL.
+
+“We aim above the mark to hit the mark.”\n— Ralph Waldo Emerson`;
     } else {
-      message = `${repo}: ${goal - count}\nsomeone just unstarred :(`;
+      message = `${repo}: ${goal - count}\nSomeone just unstarred :(`;
     }
   } else {
     return new Response();
