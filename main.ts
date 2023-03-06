@@ -32,9 +32,7 @@ Update the webhook URL and set a higher goal.`;
         : goal - count > 0
         ? `${repo}: ${goal - count}`
         : `🎉 Congratulations on your achievement! ${repo} now has ${count} stars! \
-You can set a new goal by editing the webhook URL.
-
-“We aim above the mark to hit the mark.”\n— Ralph Waldo Emerson`;
+You can set a new goal by editing the webhook URL.`;
     } else {
       message = `${repo}: ${goal - count}\nSomeone just unstarred :(`;
     }
@@ -45,5 +43,5 @@ You can set a new goal by editing the webhook URL.
   const { ok } = await fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat}&text=${encodeURIComponent(message)}`);
   return new Response(`${ok ? "" : "not"} ok`, { status: ok ? 200 : 500 });
 }, {
-  onError: (error) => { console.error(error) }
+  onError: console.error
 });
