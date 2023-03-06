@@ -7,7 +7,7 @@ Inspired by https://ghb.deno.dev.
 Replace the required values and add the following URL to your repository's webhooks. Under "Let me select individual events" make sure you've selected the "stars" scope.
 
 ```
-https://ghs.deno.dev/token?=<bot_token>&chat_id=<chat_id>&goal=<goal>
+https://ghs.deno.dev/?token=<bot_token>&chat_id=<chat_id>&goal=<goal>
 ```
 
 You can get a bot token from [@botfather](https://t.me/botfather).
